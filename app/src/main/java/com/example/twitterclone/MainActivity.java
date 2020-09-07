@@ -3,11 +3,14 @@ package com.example.twitterclone;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -49,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         simpleList = (ListView) findViewById(R.id.mobile_list);
-        tweetsArray.add("hawchta");
+        tweetsArray.add("Bonjour");
+        tweetsArray.add("Bonsoir");
+        tweetsArray.add("Bonne nuit");
         customAdapter = new CustomAdapter(this, tweetsArray);
         simpleList.setAdapter(customAdapter);
         final MainActivity mc = this;
@@ -84,6 +89,19 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
+        });
+
+        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction trans = manager.beginTransaction();
+                int displaymode = getResources().getConfiguration().orientation;
+
+                MoreInfo info = MoreInfo.newInstance(tweetsArray.get(position),"world");
+                trans.replace(R.id.moreinfofraglayout, info);
+                trans.commit();
+            }
         });
     }
 
